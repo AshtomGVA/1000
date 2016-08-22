@@ -1,0 +1,234 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>1000 Light-years</title>
+	<link href="css/css-reset.css" type="text/css" rel="stylesheet">
+	<link href="css/jquery-ui.min.css" type="text/css" rel="stylesheet">
+	<link href="css/1000ly.css" type="text/css" rel="stylesheet">
+	<link href="css/1000lyGame.css" type="text/css" rel="stylesheet">
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/knockout-3.4.0.js"></script>
+</head>
+<body class="noselect">
+
+	<div id="wrapper">
+
+		<header>
+			<h1 data-bind="css: {ingameLogo : currentGame().started() == true}"><span class="bigLogo">1000</span><br /><span class="smallLogo">Light-Years</span></h1>
+		</header>
+
+		<div data-bind="if: currentGame().started() == false" id="hub">
+
+			<!-- ko if: playerProfile().hashPlayer != null-->
+			<div class="hubPanel">
+				<h2 data-bind="text: playerProfile().nmPlayer"></h2>
+				<span data-bind="text: playerProfile().victories"></span> victories. <br />
+				<span data-bind="text: playerProfile().totalPlayed"></span> games played.<br />
+				<span data-bind="text: playerProfile().totalScore"></span> points.<br />
+				<span data-bind="text: playerProfile().totalDistance+' light-years travelled.'"></span>
+				<p>
+					<button data-bind="click: logout">Logout</button>
+				</p>
+			</div>
+			<!-- /ko -->
+
+			<!-- ko if: playerProfile().hashPlayer == null-->
+			<div class="hubPanel clearfix">
+				<h2 data-bind="click: expandLogin">Login</h2>
+				<!-- ko if: loginExpanded() == true -->		
+				<label for="logemail">Email</label>
+				<input type="email" name="loginEmail" id="logemail" /><br />
+				<label for="logpwd">Password</label>
+				<input type="password" name="loginPwd" id="logpwd"/><br />
+				<p>
+					<button data-bind="click: login">Login</button>
+				</p>
+					<span id="loginMessage" class="formMessage"></span>
+				<!-- /ko -->	
+			</div>
+
+			<div class="hubPanel clearfix">
+				<h2 data-bind="click: expandRegister">Register</h2>
+				<!-- ko if: registerExpanded() == true -->		
+				<label for="regdisplayname">Display name</label>
+				<input type="text" name="playerName" id="regdisplayname"/><br />
+				<label for="regemail">Email</label>
+				<input type="email" name="playerEmail" id="regemail"/><br />
+				<label for="regpwd">Password</label>
+				<input type="password" name="playerPwd" id="regpwd"/><br />
+				<label for="regconf">Confirm password</label>
+				<input type="password" name="playerConfPwd" id="regconf"/>
+				<p>
+					<button data-bind="click: register">Register</button>
+				</p>
+				<span id="registerMessage" class="formMessage"></span>
+				<!-- /ko -->
+			</div>
+			<!-- /ko -->
+
+			<!-- ko if: playerProfile().hashPlayer != null && currentGame().idGame() == null-->
+			<div class="hubPanel">
+				<h2>Create a New game</h2>
+				<label for="nbPlayersSlider"><span id="nbPlayers"></span> Players</label>
+				<div id="nbPlayersSlider" class="clearfix"></div>
+				<p>
+					<button data-bind="click: createGame">Create New Game</button>
+				</p>
+			</div>
+			<!-- /ko -->
+
+			<!-- ko if: playerProfile().hashPlayer != null && currentGame().idGame() == null && availableGames().length > 0 -->
+			<div class="hubPanel">
+				<h2>Join a game</h2>
+				<div class="availableGame" data-bind="foreach: availableGames()">
+					<span data-bind="text: 'Created : '+$data.dt_created+' by '+$data.nmPlayer"></span>
+					<br />
+					<span data-bind="text: $data.players.length+'/'+$data.nbPlayers+' players:'"></span>
+					<ul data-bind="foreach: $data.players">
+						<li data-bind="text: $data.nmPlayer"></li>
+					</ul>
+					<p>				
+						<button id="joinGame" data-bind="click: $parent.joinGame">Join Game</button>
+					</p>
+				</div>			
+			</div>
+			<!-- /ko -->
+
+			<!-- ko if: playerProfile().hashPlayer != null && currentGame().idGame() != null -->
+			<div class="hubPanel">
+				<h2>Waiting for <span data-bind="text: currentGame().nbPlayers() - currentGame().players().length"></span> players</h2>
+				<span data-bind="if: currentGame().closed() == true" class="formMessage">Game cancelled by creator - please leave to join a new game.</span>
+				<div data-bind="foreach: currentGame().players()">
+					<h3 data-bind="text: $data.playerName"></h3>
+				</div>
+				<p>
+					<button id="startGame" data-bind="visible: currentGame().created_by() == playerProfile().idPlayer && currentGame().nbPlayers() == currentGame().players().length, click: startGame">Start Game</button>
+					<button id="leaveGame" data-bind="visible: currentGame().created_by() != playerProfile().idPlayer, click: leaveGame">Leave Game</button>
+					<button id="cancelGame" data-bind="visible: currentGame().created_by() == playerProfile().idPlayer, click: cancelGame">Cancel Game</button>
+				</p>
+			</div>
+			<!-- /ko -->
+
+			<div class="hubPanel">
+				<h2 data-bind="click: getPlayersList" class="interactive">Players community</h2>
+				<!-- ko if: playersListExpanded() == true -->
+				<ol data-bind="foreach: playersList()">
+					<li data-bind="click: $parent.expandPlayerProfile" class="interactive">
+						<h4 data-bind="text: $data.nmPlayer"></h4>
+						<!-- ko if: $data.expanded() == true -->
+						<span data-bind="text: $data.victories"></span> victories.<br />
+						<span data-bind="text: $data.totalPlayed"></span> games played.<br />
+						<span data-bind="text: $data.totalScore"></span> points.<br />
+						<span data-bind="text: $data.totalDistance+' light-years travelled.'"></span>
+						<!-- /ko -->
+					</li>
+				</ol>
+				<!-- /ko -->
+			</div>
+		</div> <!-- end of hub page -->
+
+		<div id="game" data-bind="if: currentGame().active() == true && currentGame().started() == true">
+
+				<div data-bind="foreach: currentGame().orderedDisplayGameFields()" class="clearfix">
+
+					<div data-bind="css: $data.css, attr: {id: $data.getID()}, click: $root.currentGame().selectPlayer" class="interactive">
+						<h2 data-bind="css: { 'activePlayer' : $data.player.playerIndex == $root.currentGame().activePlayerIndex() }">	
+							<span data-bind="text: $data.player.playerName, click: $data.isMoving, clickBubble: false"></span>
+							<!-- ko if: $data.current -->
+							(You) 
+							<!-- /ko -->
+							<!-- ko if: $data.game.difficulty == 'easy' -->
+							<span data-bind="text: $data.player.distance()"></span>
+							<!-- /ko -->
+							<!-- ko if: $data.game.idWinner() == $data.player.idPlayer -->
+							<span>VICTORY!!!</span>
+							<!-- /ko -->
+							<!-- ko if: $data.current && $data.game.idWinner() >= 0-->
+							<button data-bind="click: $root.CompleteAndReturnToHub, clickBubble: false">Back to hub</button>
+							<!-- /ko -->
+							<button id="leaveGame" data-bind="visible: $data.current, click: $root.leaveOnGoingGame">Leave Game</button>
+							<div data-bind="css: $data.getPlayerActivity()" class="latency"></span>
+						</h2>
+						<div class="playerTableau">
+							<!--<div data-bind="if: !$data.current">-->
+
+								<div data-bind="foreach: $data.protections()" class="protectionsArea">
+									<!-- ko if: !$data.isCoup -->
+									<div data-bind="css: $data.getClass(), click: $data.zoomCard, clickBubble: false, attr: {title: $data.text}" class="card">
+										<span data-bind="text: $data.name" class="cardName"></span>
+									</div>
+									<!-- /ko -->
+								</div>
+
+								<div data-bind="foreach: $data.protections()" class="coupFourreArea">
+									<!-- ko if: $data.isCoup -->
+									<div data-bind="css: $data.getClass(), click: $data.zoomCard, clickBubble: false, attr: {title: $data.text}" class="card">
+										<span data-bind="text: $data.name" class="cardName"></span>
+									</div>
+									<!-- /ko -->
+								</div>
+
+								<div class="distancesArea clearfix">
+									<div data-bind="foreach: $data.distances25()" class="distancesSubArea">
+										<div data-bind="css: $data.getClass(), click: $data.zoomCard, clickBubble: false, attr: {title: $data.text}, style: {top: $data.getTop()}" class="card">
+											<span data-bind="text: $data.value" class="distanceValue"></span>
+										</div>
+									</div>
+									<div data-bind="foreach: $data.distances50()" class="distancesSubArea">
+										<div data-bind="css: $data.getClass(), click: $data.zoomCard, clickBubble: false, attr: {title: $data.text}, style: {top: $data.getTop()}" class="card">
+											<span data-bind="text: $data.value" class="distanceValue"></span>
+										</div>
+									</div>
+									<div data-bind="foreach: $data.distances75()" class="distancesSubArea">
+										<div data-bind="css: $data.getClass(), click: $data.zoomCard, clickBubble: false, attr: {title: $data.text}, style: {top: $data.getTop()}" class="card">
+											<span data-bind="text: $data.value" class="distanceValue"></span>
+										</div>
+									</div>
+									<div data-bind="foreach: $data.distances100()" class="distancesSubArea">
+										<div data-bind="css: $data.getClass(), click: $data.zoomCard, clickBubble: false, attr: {title: $data.text}, style: {top: $data.getTop()}" class="card">
+											<span data-bind="text: $data.value" class="distanceValue"></span>
+										</div>
+									</div>
+									<div data-bind="foreach: $data.distances200()" class="distancesSubArea">
+										<div data-bind="css: $data.getClass(), click: $data.zoomCard, clickBubble: false, attr: {title: $data.text}, style: {top: $data.getTop()}" class="card">
+											<span data-bind="text: $data.value" class="distanceValue"></span>
+										</div>
+									</div>
+								</div>
+
+								<div data-bind="with: $data.battles()[0]" class="battlesArea">
+									<div data-bind="css: $data.getClass(), click: $data.zoomCard, clickBubble: false, attr: {title: $data.text}" class="card">
+										<span data-bind="text: $data.name" class="cardName"></span>
+									</div>
+								</div>
+
+								<div data-bind="with: $data.speedLimit()[0]" class="speedLimitArea">
+									<div data-bind="css: $data.getClass(), click: $data.zoomCard, clickBubble: false, attr: {title: $data.text}" class="card">
+										<span data-bind="text: $data.name" class="cardName"></span>
+									</div>
+								</div>
+
+						</div>
+					</div>
+								
+					<div data-bind="if: $data.current">
+					<div data-bind="foreach: $root.currentGame().hand()" class="handArea clearfix">
+						<div data-bind="css: $data.getClass(), click: $root.currentGame().selectCard, clickBubble: false, attr: {title: $data.text}" class="card toPlay interactive">
+							<div data-bind="text: $data.type == 'distance'? $data.value : $data.name, css: $data.type == 'distance'? 'distanceValue' : 'cardName'" class="cardName"></div>
+							<div data-bind="if: $data.isSelected, click: $parent.discard" class="discard interactive">Discard</span>
+						</div>
+					</div>
+					</div>
+
+				</div> <!-- end of gameField -->
+
+		</div> <!-- end of game div -->
+
+	</div> <!-- end of wrapper -->
+
+	<script src="js/1000ly.js"></script>
+	
+</body>
+</html>

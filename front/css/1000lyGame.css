@@ -1,0 +1,422 @@
+body {
+	background-color: #000000;
+	color: #FFFFFF;
+}
+
+#game h1,
+#game h2,
+#game h3,
+#game h4,
+#game h5,
+#game h6 {
+	font-weight: 300;
+}
+
+#game h1 {
+	font-size: 3em;
+}
+
+#game h2 {
+	font-size: 2.5em;
+}
+
+#game h3 {
+	font-size: 2em;
+}
+
+#game h4 {
+	font-size: 1.7em;
+}
+
+#game h5 {
+	font-size: 1.5em;
+}
+
+#game h6 {
+	font-size: 1.2em;
+}
+
+.clearfix {
+	clear:both;
+}
+
+.card {
+	position: relative;
+	float: left;
+	height: 90px;
+	width: 60px;
+	background-color: white;
+	color: black;
+	border: 3px solid #DDDDDD;
+	margin: 5px;
+	text-align: center;
+	border-radius: 10px;
+	font-size: 10px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-size: contain;
+	/*box-sizing: border-box;*/
+}
+
+.opponent {
+	width: 31%;
+	float: left;
+	border: 1px solid white;
+	margin: 1%;
+	padding: 10px;
+	box-sizing: border-box;
+	/*border-radius: 10px;*/
+}
+.player {
+	width: 97%;
+	float: left;
+	border: 1px solid white;
+	margin: 1%;
+	padding: 10px;
+	box-sizing: border-box;
+	/*border-radius: 10px;*/
+}
+.playerTableau {
+	width: 100%;
+	position: relative;
+}
+
+.opponent .protectionsArea {
+	float: left;
+	width: 70%;
+	height: 100px;
+	background-color: #333333;
+	overflow: hidden;
+}
+.opponent .coupFourreArea {
+	float: left;
+	width: 30%;
+	height: 100px;
+	background-color: #333333;
+	overflow: hidden;
+}
+.opponent .distancesArea {
+	float: left;
+	width: 80%;
+	height: 200px;
+	background-color: #333333;
+	overflow: hidden;
+}
+.opponent .distancesSubArea {
+	float:left;
+	position:relative;
+	width: 20%;
+	height: 200px;
+}
+
+.opponent .distancesSubArea .distanceValue {
+	display: block;
+	width: 100%;
+	position: absolute;
+	top: 10px;
+	left: 0px;
+	text-align: center;	
+	font-size: 2em;
+}
+
+.opponent .battlesArea {
+	float: left;
+	width: 20%;
+	height: 100px;
+	background-color: #333333;
+	overflow: hidden;
+}
+.opponent .speedLimitArea {
+	float: left;
+	width: 20%;
+	height: 100px;
+	background-color: #333333;
+	overflow: hidden;
+}
+.opponent .freespaceArea {
+	float: left;
+	width: 100%;
+	height: 100px;
+	background-color: #333333;
+	width: 100%;
+	height: 300px;	
+	overflow: hidden;
+}
+
+.opponent .cardName {	
+	display: block;
+	width: 100%;
+	position: absolute;
+	top: 10px;
+	left: 0px;
+	text-align: center;
+}
+
+
+/*PLAYER ZONE*/
+.player .card {
+	height: 150px;
+	width: 100px;
+	border-width: 10px;
+	font-size: 12px;
+	border-width: 4px;
+	margin: 0px auto;
+}
+
+.player .distancesArea {
+	float: left;
+	width: 80%;
+	height: 340px;
+	background-color: #333333;
+	overflow: hidden;
+}
+.player .distancesSubArea {
+	float:left;
+	position:relative;
+	width: 20%;
+	height: 340px;
+}
+
+.distancesSubArea .distanceValue {
+	display: block;
+	width: 100%;
+	position: absolute;
+	top: 15px;
+	left: 0px;
+	text-align: center;	
+	font-size: 3em;
+}
+
+.player .battlesArea {
+	float: left;
+	width: 20%;
+	height: 170px;
+	background-color: #333333;
+	overflow: hidden;
+}
+.player .speedLimitArea {
+	float:left;
+	width: 20%;
+	height: 170px;
+	background-color: #333333;
+	overflow: hidden;
+}
+.player .protectionsArea {
+	float:left;
+	width: 70%;
+	height: 170px;
+	background-color: #333333;
+	overflow: hidden;
+}
+.player .coupFourreArea {
+	width: 30%;
+	height: 170px;
+	float:left;
+	background-color: #333333;
+	overflow: hidden;
+}
+.player .freespaceArea {
+	background-color: #333333;
+	width: 100%;
+	height: 300px;	
+	overflow: hidden;
+}
+
+.player .cardName {	
+	display: block;
+	width: 100%;
+	position: absolute;
+	top: 15px;
+	left: 0px;
+	text-align: center;
+}
+
+.handArea .card {
+	height: 180px;
+	width: 120px;
+	border-width: 10px;
+	font-size: 16px;
+	border-width: 4px;
+	margin: 10px 10px;
+}
+.handArea {
+	background-color: #000000;
+	width: 100%;
+	height: 200px;
+	position: relative;
+}
+
+.attack {
+	border-color: #FF0000;
+}
+
+.defense {
+	border-color: #00FF00;
+}
+
+.protection {
+	border-color: #0000FF;
+}
+
+.distance {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	border-color: #990099;
+}
+
+.attack.A {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/attackA.png');	
+}
+
+.attack.B {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/attackB.png');	
+}
+
+.attack.C {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/attackC.png');
+}
+
+.attack.D {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/attackD.png');
+}
+
+.attack.E {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/attackE.png');
+}
+
+.defense.A {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/defenseA.png');	
+}
+
+.defense.B {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/defenseB.png');	
+}
+
+.defense.C {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/defenseC.png');
+}
+
+.defense.D {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/defenseD.png');
+}
+
+.defense.E {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/defenseE.png');
+}
+
+.protection.A {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/protectionA.png');	
+}
+
+.protection.B {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/protectionB.png');	
+}
+
+.protection.C {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/protectionC.png');
+}
+
+.protection.D {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/protectionD.png');
+}
+
+.protection.E {
+	color: white;	
+	text-shadow: 2px 2px #000000;
+	background-image: url('../img/default/protectionE.png');
+}
+
+.activePlayer {
+	color: yellow;
+}
+
+.selected {
+	box-shadow: 0px 0px 20px #FFFFFF;
+}
+
+.coupFourreArea .card {    
+	-ms-transform: rotate(-90deg); /* IE 9 */
+    -o-transform: rotate(-90deg); /* Opera */
+    -webkit-transform: rotate(-90deg); /* Safari */
+    transform: rotate(-90deg);
+
+}
+
+.toPlay {
+	position:relative;	
+}
+
+.discard {
+	display: block;
+	width: 100%;
+	text-align: center;
+	position: absolute;
+	bottom: 10px;
+	left: 0px;
+}
+
+.discard:hover {
+	background-color: red;
+	color: white;
+}
+
+.handArea .cardName {	
+	display: block;
+	width: 100%;
+	position: absolute;
+	top: 20px;
+	left: 0px;
+	text-align: center;
+}
+
+.handArea .distanceValue {	
+	font-size: 3em;
+}
+
+.latency {
+	float: right;
+	width:32px;
+	height:32px;
+	background-size: cover;
+}
+.goodLat {
+	background-image: url('../img/goodLat.png');	
+}
+.okLat {
+	background-image: url('../img/okLat.png');	
+}
+.notGoodLat {
+	background-image: url('../img/notGoodLat.png');	
+}
+.badLat {
+	background-image: url('../img/badLat.png');	
+}
